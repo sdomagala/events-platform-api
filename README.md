@@ -37,3 +37,25 @@ src/
     exceptions/
     index.js
 ```
+
+# Instalacja bazy danych
+
+```sh
+sudo apt-get update
+sudo apt-get install curl ca-certificates gnupg
+curl https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+sudo apt install postgresql-common
+sudo sh /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh
+sudo apt-get install postgresql-11
+
+sudo service postgresql start
+
+sudo -u postgres psql
+CREATE DATABASE events
+
+sudo -u postgres psql events
+
+\password postgres
+admin
+admin
+```

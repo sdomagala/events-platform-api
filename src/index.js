@@ -1,8 +1,16 @@
 const Koa = require('koa')
 const bodyParser = require('koa-bodyparser')
 const { userMgmtController } = require('./controllers/user-mgmt.controller')
+const { createConnection } = require('./helpers/connection.helper')
 
 const app = new Koa()
+
+const connection = createConnection()
+
+app.use((ctx, next) => {
+    ctx.state.connection = connection
+    return next()
+})
 
 app.use(bodyParser())
 

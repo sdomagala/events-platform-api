@@ -4,7 +4,7 @@ async function tokenValidatorMiddleware(ctx, next) {
     const token = ctx.headers['authorization'] && ctx.headers['authorization'].split(' ')[1]
     if (token && await validateToken(token)) {
         console.log('User validated')
-        next()
+        return next()
     } else {
         ctx.status = 401
         ctx.body = 'Unauthorized'
