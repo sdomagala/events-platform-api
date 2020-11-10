@@ -1,21 +1,17 @@
 const Router = require('@koa/router')
-const { createToken } = require('../services/jwt.service')
 const { tokenValidatorMiddleware } = require('../middlewares/token-validator.middleware')
-const { v4: uuidv4 } = require('uuid')
+const { createUser, validateUser } = require('../services/users.service')
 
 const userMgmtController = new Router()
 
 userMgmtController.post('/register', async (ctx) => {
-    const userId = uuidv4()
-    const token = await createToken(userId)
-    const { name, surname } = ctx.request.body
-    const { connection } = ctx.state
-    await connection('users').insert({ name, surname })
-    ctx.body = { token }
+    const body = await createUser(ctx)
+    ctx.body = body
 })
 
-userMgmtController.post('/login', (ctx) => {
-    ctx.body = ctx.request.body
+userMgmtController.post('/login', async (ctx) => {
+    const body = await validateUser(ctx)
+    ctx.body = body
 })
 
 userMgmtController.post('/validate', tokenValidatorMiddleware, async (ctx) => {
