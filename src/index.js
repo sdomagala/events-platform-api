@@ -1,17 +1,13 @@
 const Koa = require('koa')
 const bodyParser = require('koa-bodyparser')
 const { userMgmtController } = require('./controllers/user-mgmt.controller')
-const { createConnection } = require('./helpers/connection.helper')
+const { errorHandlerMiddleware } = require('./middlewares/error-handler.middleware')
+const { handleConnectionMiddleware } = require('./middlewares/handle-connection.middleware')
 
 const app = new Koa()
 
-const connection = createConnection()
-
-app.use((ctx, next) => {
-    ctx.state.connection = connection
-    return next()
-})
-
+app.use(handleConnectionMiddleware())
+app.use(errorHandlerMiddleware())
 app.use(bodyParser())
 
 registerRoutes(app)

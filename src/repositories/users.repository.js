@@ -1,3 +1,5 @@
+const { UserAlreadyExistsException } = require("../exceptions/user-already-exists.exception")
+
 async function createUserRecord(user, ctx) {
     const { connection } = ctx.state
     try {
@@ -5,7 +7,7 @@ async function createUserRecord(user, ctx) {
         return id
     } catch (e) {
         if (e.code === '23505') {
-            throw new Error('User already exists')
+            throw new UserAlreadyExistsException()
         }
         throw e
     }
