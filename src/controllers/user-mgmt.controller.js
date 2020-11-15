@@ -15,8 +15,6 @@ userMgmtController.post('/login', async (ctx) => {
 })
 
 userMgmtController.post('/validate', tokenValidatorMiddleware, async (ctx) => {
-    const { connection } = ctx.state
-
     ctx.body = await connection('users').select()
 })
 
