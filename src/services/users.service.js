@@ -1,4 +1,4 @@
-const { createUserRecord, getUserRecordByEmail, getUsersRecords, getUserRecordById } = require("../repositories/users.repository")
+const { createUserRecord, getUserRecordByEmail, getUsersRecords, getUserRecordById, updateUserRecord } = require("../repositories/users.repository")
 
 const bcrypt = require('bcrypt')
 const { createToken } = require("./jwt.service")
@@ -31,9 +31,14 @@ function getUser(userId, ctx) {
     return getUserRecordById(userId, ctx)
 }
 
+function updateUser(userId, body, ctx) {
+    return updateUserRecord(userId, body, ctx)
+}
+
 module.exports = {
     createUser,
     validateUser,
     getAllUsers,
     getUser,
+    updateUser,
 }

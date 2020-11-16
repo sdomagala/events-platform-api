@@ -22,7 +22,7 @@ async function getUserRecordByEmail(email, ctx) {
 
 async function getUserRecordById(userId, ctx) {
     const { connection } = ctx.state
-    const user = await connection('users').where({ id: userId }).first()
+    const user = await connection('users').select(['id', 'email', 'name', 'surname']).where({ id: userId }).first()
     if (!user) {
         throw new UserNotFoundException()
     }
@@ -35,9 +35,19 @@ async function getUsersRecords(ctx) {
     return users
 }
 
+async function updateUserRecord(userId, body, ctx) {
+    const { connection } = ctx.state
+    const [user] = await connection('users').update(body).where({ id: userId }).returning(['id', 'email', 'name', 'surname'])
+    if (!user) {
+        throw new UserNotFoundException()
+    }
+    return user
+}
+
 module.exports = {
     createUserRecord,
     getUserRecordByEmail,
     getUserRecordById,
     getUsersRecords,
+    updateUserRecord,
 }
