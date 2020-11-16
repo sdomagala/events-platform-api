@@ -1,4 +1,4 @@
-const { createUserRecord, getUserRecord } = require("../repositories/users.repository")
+const { createUserRecord, getUserRecordByEmail, getUsersRecords, getUserRecordById } = require("../repositories/users.repository")
 
 const bcrypt = require('bcrypt')
 const { createToken } = require("./jwt.service")
@@ -14,7 +14,7 @@ async function createUser(ctx) {
 
 async function validateUser(ctx) {
     const { email, password } = ctx.request.body
-    const user = await getUserRecord(email, ctx)
+    const user = await getUserRecordByEmail(email, ctx)
     if (!user || !await bcrypt.compare(password, user.password)) {
         throw new InvalidCredentialsException()
     } else {
@@ -23,7 +23,17 @@ async function validateUser(ctx) {
     }
 }
 
+function getAllUsers(ctx) {
+    return getUsersRecords(ctx)
+}
+
+function getUser(userId, ctx) {
+    return getUserRecordById(userId, ctx)
+}
+
 module.exports = {
     createUser,
     validateUser,
+    getAllUsers,
+    getUser,
 }

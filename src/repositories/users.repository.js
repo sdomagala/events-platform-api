@@ -1,4 +1,5 @@
 const { UserAlreadyExistsException } = require("../exceptions/user-already-exists.exception")
+const { UserNotFoundException } = require("../exceptions/user-not-found.exception")
 
 async function createUserRecord(user, ctx) {
     const { connection } = ctx.state
@@ -13,13 +14,30 @@ async function createUserRecord(user, ctx) {
     }
 }
 
-async function getUserRecord(email, ctx) {
+async function getUserRecordByEmail(email, ctx) {
     const { connection } = ctx.state
     const user = await connection('users').where({ email }).first()
     return user
 }
 
+async function getUserRecordById(userId, ctx) {
+    const { connection } = ctx.state
+    const user = await connection('users').where({ id: userId }).first()
+    if (!user) {
+        throw new UserNotFoundException()
+    }
+    return user
+}
+
+async function getUsersRecords(ctx) {
+    const { connection } = ctx.state
+    const users = await connection('users').select(['id', 'email', 'name', 'surname'])
+    return users
+}
+
 module.exports = {
     createUserRecord,
-    getUserRecord,
+    getUserRecordByEmail,
+    getUserRecordById,
+    getUsersRecords,
 }
