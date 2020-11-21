@@ -1,5 +1,6 @@
 
 const jwt = require('jsonwebtoken')
+const { UnauthorizedException } = require('../exceptions/unauthorized.exception')
 const secret = '34963a67-8795-4bfd-9010-1c9cc5b3ef8c'
 
 async function createToken(userId) {
@@ -20,7 +21,7 @@ async function validateToken(token) {
     return new Promise(resolve => jwt.verify(token, secret, (err, val) => {
         if (err) {
             // TODO: unauthorized exception
-            throw new Error(`Token sign failed. Reason: ${err.message}`)
+            throw new UnauthorizedException(`Token sign failed. Reason: ${err.message}`)
         }
         resolve(val)
     }))

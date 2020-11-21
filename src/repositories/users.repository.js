@@ -44,10 +44,20 @@ async function updateUserRecord(userId, body, ctx) {
     return user
 }
 
+async function deleteUserRecord(userId, ctx) {
+    const { connection } = ctx.state
+    const [user] = await connection('users').delete().where({ id: userId }).returning(['id', 'email', 'name', 'surname'])
+    if (!user) {
+        throw new UserNotFoundException()
+    }
+
+}
+
 module.exports = {
     createUserRecord,
     getUserRecordByEmail,
     getUserRecordById,
     getUsersRecords,
     updateUserRecord,
+    deleteUserRecord,
 }
