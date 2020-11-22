@@ -1,6 +1,6 @@
-const Router = require('@koa/router')
-const { getAllUsers, getUser, updateUser, deleteUser } = require('../services/users.service')
-const { tokenValidatorMiddleware } = require('../middlewares/token-validator.middleware')
+import Router from '@koa/router'
+import { getAllUsers, getUser, updateUser, deleteUser } from'../services/users.service'
+import { tokenValidatorMiddleware } from'../middlewares/token-validator.middleware'
 
 const userController = new Router()
 
@@ -9,20 +9,20 @@ userController.get('/users', async (ctx) => {
 })
 
 userController.get('/users/:userId', async (ctx) => {
-    const userId = ctx.request.params.userId
+    const userId = ctx.params.userId
     ctx.body = await getUser(userId, ctx)
 })
 
 userController.put('/users/:userId', async (ctx) => {
-    const userId = ctx.request.params.userId
-    const { name, surname } = ctx.request.body
+    const userId = ctx.params.userId
+    const { name, surname } = ctx.body
     ctx.body = await updateUser(userId, { name, surname }, ctx)
 })
 
 userController.del('/users/:userId', tokenValidatorMiddleware, async (ctx) => {
-    const userId = ctx.request.params.userId
+    const userId = ctx.params.userId
     await deleteUser(userId, ctx)
     ctx.status = 204
 })
 
-module.exports = { userController }
+export { userController }

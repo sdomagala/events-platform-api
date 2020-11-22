@@ -1,9 +1,8 @@
-const { createUserRecord, getUserRecordByEmail, getUsersRecords, getUserRecordById, updateUserRecord, deleteUserRecord } = require("../repositories/users.repository")
-
-const bcrypt = require('bcrypt')
-const { createToken } = require("./jwt.service")
-const { InvalidCredentialsException } = require("../exceptions/invalid-credentials.exception")
-const { ForbiddenException } = require("../exceptions/forbidden.exception")
+import { createUserRecord, getUserRecordByEmail, getUsersRecords, getUserRecordById, updateUserRecord, deleteUserRecord } from "../repositories/users.repository"
+import bcrypt from 'bcrypt'
+import { createToken } from "./jwt.service"
+import { InvalidCredentialsException } from "../exceptions/invalid-credentials.exception"
+import { ForbiddenException } from "../exceptions/forbidden.exception"
 
 async function createUser(ctx) {
     const { email, name, surname, password } = ctx.request.body
@@ -43,7 +42,7 @@ function deleteUser(userId, ctx) {
     return deleteUserRecord(userId, ctx)
 }
 
-module.exports = {
+export {
     createUser,
     validateUser,
     getAllUsers,

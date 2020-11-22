@@ -18,4 +18,4 @@ function errorHandlerMiddleware() {
     }
 }
 
-module.exports = { errorHandlerMiddleware }
+export { errorHandlerMiddleware }

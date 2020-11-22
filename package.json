@@ -2,12 +2,12 @@
   "name": "events-platform",
   "version": "0.1.0",
   "description": "Events Management Platform",
-  "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node src/index.js",
-    "watch": "nodemon node src/index.js",
-    "knex": "knex"
+    "start": "npm run tsc && node dist/index.js",
+    "watch": "nodemon -e ts npm run start",
+    "knex": "knex",
+    "tsc": "tsc"
   },
   "author": "Sebastian Domagala",
   "license": "ISC",
@@ -23,8 +23,10 @@
     "winston": "^3.3.3"
   },
   "devDependencies": {
+    "@tsconfig/node12": "^1.0.7",
     "@types/koa": "^2.11.6",
     "@types/koa__router": "^8.0.3",
-    "nodemon": "^2.0.6"
+    "nodemon": "^2.0.6",
+    "typescript": "^4.1.2"
   }
 }

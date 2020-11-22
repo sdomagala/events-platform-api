@@ -1,10 +1,10 @@
-const Koa = require('koa')
-const bodyParser = require('koa-bodyparser')
-const { userMgmtController } = require('./controllers/user-mgmt.controller')
-const { userController } = require('./controllers/users.controller')
-const { errorHandlerMiddleware } = require('./middlewares/error-handler.middleware')
-const { handleConnectionMiddleware } = require('./middlewares/handle-connection.middleware')
-const { loggerMiddleware, logger } = require('./middlewares/logger.middleware')
+import Koa from 'koa'
+import bodyParser from 'koa-bodyparser'
+import { userMgmtController } from './controllers/user-mgmt.controller'
+import { userController } from './controllers/users.controller'
+import { errorHandlerMiddleware } from './middlewares/error-handler.middleware'
+import { handleConnectionMiddleware } from './middlewares/handle-connection.middleware'
+import { loggerMiddleware, logger } from './middlewares/logger.middleware'
 
 const app = new Koa()
 app.use(loggerMiddleware())

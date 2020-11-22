@@ -1,4 +1,4 @@
-const { BaseException } = require("./base.exception");
+import { BaseException } from "./base.exception"
 
 class UnauthorizedException extends BaseException {
     constructor(message) {
@@ -6,4 +6,4 @@ class UnauthorizedException extends BaseException {
     }
 }
 
-module.exports = { UnauthorizedException }
+export { UnauthorizedException }

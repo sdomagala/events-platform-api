@@ -1,5 +1,5 @@
-const { validateToken } = require('../services/jwt.service')
-const { UnauthorizedException } = require('../exceptions/unauthorized.exception')
+import { validateToken } from '../services/jwt.service'
+import { UnauthorizedException } from '../exceptions/unauthorized.exception'
 
 async function tokenValidatorMiddleware(ctx, next) {
     const token = ctx.headers['authorization'] && ctx.headers['authorization'].split(' ')[1]
@@ -13,4 +13,4 @@ async function tokenValidatorMiddleware(ctx, next) {
     }
 }
 
-module.exports = { tokenValidatorMiddleware }
+export { tokenValidatorMiddleware }

@@ -1,6 +1,6 @@
 
-const jwt = require('jsonwebtoken')
-const { UnauthorizedException } = require('../exceptions/unauthorized.exception')
+import jwt from 'jsonwebtoken'
+import { UnauthorizedException } from '../exceptions/unauthorized.exception'
 const secret = '34963a67-8795-4bfd-9010-1c9cc5b3ef8c'
 
 async function createToken(userId) {
@@ -27,7 +27,7 @@ async function validateToken(token) {
     }))
 }
 
-module.exports = {
+export {
     createToken,
     validateToken
 }

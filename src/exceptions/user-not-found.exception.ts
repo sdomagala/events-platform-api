@@ -1,4 +1,4 @@
-const { BaseException } = require("./base.exception");
+import { BaseException } from "./base.exception"
 
 class UserNotFoundException extends BaseException {
     constructor() {
@@ -6,4 +6,4 @@ class UserNotFoundException extends BaseException {
     }
 }
 
-module.exports = { UserNotFoundException }
+export { UserNotFoundException }

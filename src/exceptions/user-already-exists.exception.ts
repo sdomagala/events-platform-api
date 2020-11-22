@@ -1,4 +1,4 @@
-const { BaseException } = require("./base.exception");
+import { BaseException } from "./base.exception"
 
 class UserAlreadyExistsException extends BaseException {
     constructor() {
@@ -6,4 +6,4 @@ class UserAlreadyExistsException extends BaseException {
     }
 }
 
-module.exports = { UserAlreadyExistsException }
+export { UserAlreadyExistsException }

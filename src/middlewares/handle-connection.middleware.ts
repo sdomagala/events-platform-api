@@ -1,4 +1,4 @@
-const { createConnection } = require('../helpers/connection.helper')
+import { createConnection } from '../helpers/connection.helper'
 
 function handleConnectionMiddleware() {
     const connection = createConnection()
@@ -10,4 +10,4 @@ function handleConnectionMiddleware() {
     }
 }
 
-module.exports = { handleConnectionMiddleware }
+export { handleConnectionMiddleware }

@@ -1,4 +1,4 @@
-const knex = require('knex')
+import knex from 'knex'
 
 function createConnection() {
     return knex({
@@ -12,4 +12,4 @@ function createConnection() {
     })
 }
 
-module.exports = { createConnection }
+export { createConnection }

@@ -1,5 +1,5 @@
-const { v4: uuidv4 } = require('uuid')
-const winston = require('winston')
+import { v4 as uuidv4 } from 'uuid'
+import winston from 'winston'
 
 const logger = winston.createLogger({
     format: winston.format.json(),
@@ -22,4 +22,4 @@ function loggerMiddleware() {
     }
 }
 
-module.exports = { logger, loggerMiddleware }
+export { logger, loggerMiddleware }

@@ -1,5 +1,5 @@
-const { UserAlreadyExistsException } = require("../exceptions/user-already-exists.exception")
-const { UserNotFoundException } = require("../exceptions/user-not-found.exception")
+import { UserAlreadyExistsException } from "../exceptions/user-already-exists.exception"
+import { UserNotFoundException } from "../exceptions/user-not-found.exception"
 
 async function createUserRecord(user, ctx) {
     const { connection } = ctx.state
@@ -53,7 +53,7 @@ async function deleteUserRecord(userId, ctx) {
 
 }
 
-module.exports = {
+export {
     createUserRecord,
     getUserRecordByEmail,
     getUserRecordById,
