@@ -1,7 +1,27 @@
 import { UserAlreadyExistsException } from "../exceptions/user-already-exists.exception"
 import { UserNotFoundException } from "../exceptions/user-not-found.exception"
 
-async function createUserRecord(user, ctx) {
+interface BaseUser {
+    email: string
+    name: string
+    surname: string
+}
+
+interface UserId {
+    id: number
+}
+
+interface UserPassword {
+    password: string
+}
+
+export type CreateUserInput = BaseUser & UserPassword
+
+export type DbUser = BaseUser & UserId & UserPassword
+
+export type APIUser = BaseUser & UserId
+
+async function createUserRecord(user: CreateUserInput, ctx): Promise<string> {
     const { connection } = ctx.state
     try {
         const id = await connection('users').insert(user).returning('id')
@@ -14,13 +34,13 @@ async function createUserRecord(user, ctx) {
     }
 }
 
-async function getUserRecordByEmail(email, ctx) {
+async function getUserRecordByEmail(email: string, ctx): Promise<DbUser> {
     const { connection } = ctx.state
     const user = await connection('users').where({ email }).first()
     return user
 }
 
-async function getUserRecordById(userId, ctx) {
+async function getUserRecordById(userId: string, ctx): Promise<APIUser> {
     const { connection } = ctx.state
     const user = await connection('users').select(['id', 'email', 'name', 'surname']).where({ id: userId }).first()
     if (!user) {
@@ -29,13 +49,13 @@ async function getUserRecordById(userId, ctx) {
     return user
 }
 
-async function getUsersRecords(ctx) {
+async function getUsersRecords(ctx): Promise<APIUser[]> {
     const { connection } = ctx.state
     const users = await connection('users').select(['id', 'email', 'name', 'surname'])
     return users
 }
 
-async function updateUserRecord(userId, body, ctx) {
+async function updateUserRecord(userId: string, body: Partial<CreateUserInput>, ctx): Promise<APIUser> {
     const { connection } = ctx.state
     const [user] = await connection('users').update(body).where({ id: userId }).returning(['id', 'email', 'name', 'surname'])
     if (!user) {
@@ -44,7 +64,7 @@ async function updateUserRecord(userId, body, ctx) {
     return user
 }
 
-async function deleteUserRecord(userId, ctx) {
+async function deleteUserRecord(userId: string, ctx): Promise<void> {
     const { connection } = ctx.state
     const [user] = await connection('users').delete().where({ id: userId }).returning(['id', 'email', 'name', 'surname'])
     if (!user) {

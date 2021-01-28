@@ -1,10 +1,10 @@
-import { createUserRecord, getUserRecordByEmail, getUsersRecords, getUserRecordById, updateUserRecord, deleteUserRecord } from "../repositories/users.repository"
+import { createUserRecord, getUserRecordByEmail, getUsersRecords, getUserRecordById, updateUserRecord, deleteUserRecord, APIUser, DbUser, CreateUserInput } from "../repositories/users.repository"
 import bcrypt from 'bcrypt'
 import { createToken } from "./jwt.service"
 import { InvalidCredentialsException } from "../exceptions/invalid-credentials.exception"
 import { ForbiddenException } from "../exceptions/forbidden.exception"
 
-async function createUser(ctx) {
+async function createUser(ctx): Promise<{ token: string }> {
     const { email, name, surname, password } = ctx.request.body
     const hash = await bcrypt.hash(password, 10)
     const [id] = await createUserRecord({ email, name, surname, password: hash }, ctx)
@@ -12,7 +12,7 @@ async function createUser(ctx) {
     return { token }
 }
 
-async function validateUser(ctx) {
+async function validateUser(ctx): Promise<{ token: string }> {
     const { email, password } = ctx.request.body
     const user = await getUserRecordByEmail(email, ctx)
     if (!user || !await bcrypt.compare(password, user.password)) {
@@ -23,19 +23,19 @@ async function validateUser(ctx) {
     }
 }
 
-function getAllUsers(ctx) {
+function getAllUsers(ctx): Promise<APIUser[]> {
     return getUsersRecords(ctx)
 }
 
-function getUser(userId, ctx) {
+function getUser(userId: string, ctx): Promise<APIUser> {
     return getUserRecordById(userId, ctx)
 }
 
-function updateUser(userId, body, ctx) {
+function updateUser(userId: string, body: Partial<CreateUserInput>, ctx): Promise<APIUser> {
     return updateUserRecord(userId, body, ctx)
 }
 
-function deleteUser(userId, ctx) {
+function deleteUser(userId: string, ctx): Promise<void> {
     if (!(Number(userId) === ctx.state.user.userId)) {
         throw new ForbiddenException('Tried to delete other user than yourself')
     }

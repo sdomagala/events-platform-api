@@ -4,6 +4,7 @@
     "exclude": [],
     "compilerOptions": {
         "outDir": "dist",
+        "noImplicitAny": false,
         "preserveConstEnums": true
     }
 }
