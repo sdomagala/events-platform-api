@@ -3,6 +3,10 @@ import jwt from 'jsonwebtoken'
 import { UnauthorizedException } from '../exceptions/unauthorized.exception'
 const secret = '34963a67-8795-4bfd-9010-1c9cc5b3ef8c'
 
+export interface JWTUser {
+    userId: number
+}
+
 async function createToken(userId): Promise<string> {
     const payload = {
         userId
@@ -17,7 +21,7 @@ async function createToken(userId): Promise<string> {
     }))
 }
 
-async function validateToken(token) {
+async function validateToken(token): Promise<JWTUser> {
     return new Promise(resolve => jwt.verify(token, secret, (err, val) => {
         if (err) {
             // TODO: unauthorized exception

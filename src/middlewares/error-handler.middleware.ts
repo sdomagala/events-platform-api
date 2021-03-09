@@ -1,5 +1,8 @@
+import { Next } from "koa"
+import { RequestContext } from "../interfaces/request-context.interface"
+
 function errorHandlerMiddleware() {
-    return async (ctx, next) => {
+    return async (ctx: RequestContext, next: Next) => {
         try {
             return await next()
         } catch (e) {

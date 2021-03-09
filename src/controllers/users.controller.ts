@@ -1,8 +1,9 @@
 import Router from '@koa/router'
 import { getAllUsers, getUser, updateUser, deleteUser } from'../services/users.service'
 import { tokenValidatorMiddleware } from'../middlewares/token-validator.middleware'
+import { RequestState } from '../interfaces/request-context.interface'
 
-const userController = new Router()
+const userController = new Router<RequestState>()
 
 userController.get('/users', async (ctx) => {
     ctx.body = await getAllUsers(ctx)

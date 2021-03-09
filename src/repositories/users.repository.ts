@@ -1,5 +1,6 @@
 import { UserAlreadyExistsException } from "../exceptions/user-already-exists.exception"
 import { UserNotFoundException } from "../exceptions/user-not-found.exception"
+import { RequestContext } from "../interfaces/request-context.interface"
 
 interface BaseUser {
     email: string
@@ -21,7 +22,7 @@ export type DbUser = BaseUser & UserId & UserPassword
 
 export type APIUser = BaseUser & UserId
 
-async function createUserRecord(user: CreateUserInput, ctx): Promise<string> {
+async function createUserRecord(user: CreateUserInput, ctx: RequestContext): Promise<string[]> {
     const { connection } = ctx.state
     try {
         const id = await connection('users').insert(user).returning('id')
@@ -34,13 +35,13 @@ async function createUserRecord(user: CreateUserInput, ctx): Promise<string> {
     }
 }
 
-async function getUserRecordByEmail(email: string, ctx): Promise<DbUser> {
+async function getUserRecordByEmail(email: string, ctx: RequestContext): Promise<DbUser> {
     const { connection } = ctx.state
     const user = await connection('users').where({ email }).first()
     return user
 }
 
-async function getUserRecordById(userId: string, ctx): Promise<APIUser> {
+async function getUserRecordById(userId: string, ctx: RequestContext): Promise<APIUser> {
     const { connection } = ctx.state
     const user = await connection('users').select(['id', 'email', 'name', 'surname']).where({ id: userId }).first()
     if (!user) {
@@ -49,13 +50,13 @@ async function getUserRecordById(userId: string, ctx): Promise<APIUser> {
     return user
 }
 
-async function getUsersRecords(ctx): Promise<APIUser[]> {
+async function getUsersRecords(ctx: RequestContext): Promise<APIUser[]> {
     const { connection } = ctx.state
     const users = await connection('users').select(['id', 'email', 'name', 'surname'])
     return users
 }
 
-async function updateUserRecord(userId: string, body: Partial<CreateUserInput>, ctx): Promise<APIUser> {
+async function updateUserRecord(userId: string, body: Partial<CreateUserInput>, ctx: RequestContext): Promise<APIUser> {
     const { connection } = ctx.state
     const [user] = await connection('users').update(body).where({ id: userId }).returning(['id', 'email', 'name', 'surname'])
     if (!user) {
@@ -64,7 +65,7 @@ async function updateUserRecord(userId: string, body: Partial<CreateUserInput>, 
     return user
 }
 
-async function deleteUserRecord(userId: string, ctx): Promise<void> {
+async function deleteUserRecord(userId: string, ctx: RequestContext): Promise<void> {
     const { connection } = ctx.state
     const [user] = await connection('users').delete().where({ id: userId }).returning(['id', 'email', 'name', 'surname'])
     if (!user) {
