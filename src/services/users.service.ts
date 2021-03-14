@@ -6,7 +6,7 @@ import { ForbiddenException } from "../exceptions/forbidden.exception"
 import { RequestContext } from "../interfaces/request-context.interface"
 
 async function createUser(ctx: RequestContext): Promise<{ token: string }> {
-    const { email, name, surname, password } = (ctx.request as any).body
+    const { email, name, surname, password } = ctx.request.body
     const hash = await bcrypt.hash(password, 10)
     const [id] = await createUserRecord({ email, name, surname, password: hash }, ctx)
     const token = await createToken(id)
@@ -14,7 +14,7 @@ async function createUser(ctx: RequestContext): Promise<{ token: string }> {
 }
 
 async function validateUser(ctx: RequestContext): Promise<{ token: string }> {
-    const { email, password } = (ctx.request as any).body
+    const { email, password } = ctx.request.body
     const user = await getUserRecordByEmail(email, ctx)
     if (!user || !await bcrypt.compare(password, user.password)) {
         throw new InvalidCredentialsException()

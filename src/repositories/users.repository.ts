@@ -22,7 +22,7 @@ export type DbUser = BaseUser & UserId & UserPassword
 
 export type APIUser = BaseUser & UserId
 
-async function createUserRecord(user: CreateUserInput, ctx: RequestContext): Promise<string[]> {
+async function createUserRecord(user: CreateUserInput, ctx: RequestContext): Promise<number[]> {
     const { connection } = ctx.state
     try {
         const id = await connection('users').insert(user).returning('id')

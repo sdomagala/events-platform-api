@@ -16,7 +16,7 @@ userController.get('/users/:userId', async (ctx) => {
 
 userController.put('/users/:userId', async (ctx) => {
     const userId = ctx.params.userId
-    const { name, surname } = ctx.body
+    const { name, surname } = ctx.request.body
     ctx.body = await updateUser(userId, { name, surname }, ctx)
 })
 

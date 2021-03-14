@@ -16,7 +16,7 @@ registerRoutes(app)
 
 app.listen(3001, () => logger.info('Server started on http://localhost:3001'))
 
-function registerRoutes(app) {
+function registerRoutes(app: Koa) {
     app
         .use(userMgmtController.routes())
         .use(userMgmtController.allowedMethods())
