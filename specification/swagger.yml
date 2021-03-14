@@ -172,7 +172,7 @@ paths:
         "200":
           description: "Response with list of all publishers available"
           schema:
-            $ref: "#/definitions/UsersList"
+            $ref: "#/definitions/PublisherList"
         "400":
           description: "Bad Request"
         "401":
@@ -192,12 +192,12 @@ paths:
         description: "Consumer object that needs to be added to service"
         required: true
         schema:
-          $ref: "#/definitions/User"
+          $ref: "#/definitions/Publisher"
       responses:
         "200":
           description: "Response with list of all consumers available"
           schema:
-            $ref: "#/definitions/User"
+            $ref: "#/definitions/Publisher"
         "400":
           description: "Bad Request"
         "401":
@@ -222,7 +222,7 @@ paths:
           schema:
             type: "array"
             items:
-              $ref: "#/definitions/User"
+              $ref: "#/definitions/Publisher"
         "400":
           description: "Bad Request"
         "401":
@@ -245,7 +245,7 @@ paths:
           schema:
             type: "array"
             items:
-              $ref: "#/definitions/User"
+              $ref: "#/definitions/Publisher"
         "400":
           description: "Bad Request"
         "401":
@@ -268,10 +268,6 @@ paths:
       responses:
         "204":
           description: "successful operation"
-          schema:
-            type: "array"
-            items:
-              $ref: "#/definitions/Publisher"
         "400":
           description: "Bad Request"
         "401":
@@ -540,6 +536,10 @@ definitions:
     type: "array"
     items:
       type: "string"
+  PublisherList:
+    type: "array"
+    items:
+      type: "string"
   UserDetailsList:
     type: "array"
     items:
@@ -548,7 +548,7 @@ definitions:
     type: "object"
     properties:
       id:
-        type: "string"
+        type: "number"
       name:
         type: "string"
       surname:
@@ -560,8 +560,6 @@ definitions:
     properties:
       name:
         type: "string"
-      organization:
-        type: "string"
   Event:
     type: "object"
     properties:
@@ -570,10 +568,9 @@ definitions:
       name:
         type: "string"
       description: 
-        type: "integer"
-        format: "int64"
-      publisherId: 
         type: "string"
+      publisherId: 
+        type: "number"
       startDate:
         type: "string"
         format: "date-time"

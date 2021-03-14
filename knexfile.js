@@ -11,5 +11,4 @@ module.exports = {
         database: 'events'
     }
   }
-
 };
