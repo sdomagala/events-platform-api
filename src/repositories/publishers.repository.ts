@@ -31,3 +31,9 @@ export async function createPublisherRecord(user: CreatePublisherInput, ctx: Req
         throw e
     }
 }
+
+export async function getPublishersRecords(ctx: RequestContext): Promise<APIPublisher[]> {
+    const { connection } = ctx.state
+    const publishers = await connection('publishers').select(['id', 'name'])
+    return publishers
+}
