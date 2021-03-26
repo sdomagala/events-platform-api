@@ -1,6 +1,6 @@
 import { ForbiddenException } from "../exceptions/forbidden.exception"
 import { RequestContext } from "../interfaces/request-context.interface"
-import { APIPublisher, createPublisherRecord, getPublishersRecords } from "../repositories/publishers.repository"
+import { APIPublisher, createPublisherRecord, getPublisherRecordById, getPublishersRecords } from "../repositories/publishers.repository"
 
 export async function createPublisher(ctx: RequestContext): Promise<{ id: number }> {
     const { name } = ctx.request.body
@@ -13,4 +13,8 @@ export async function createPublisher(ctx: RequestContext): Promise<{ id: number
 
 export function getAllPublishers(ctx: RequestContext): Promise<APIPublisher[]> {
     return getPublishersRecords(ctx)
+}
+
+export function getPublisher(publisherId: string, ctx: RequestContext): Promise<APIPublisher> {
+    return getPublisherRecordById(publisherId, ctx)
 }

@@ -1,3 +1,4 @@
+import { PublisherNotFoundException } from "../exceptions/publisher-not-found.exception"
 import { UnauthorizedException } from "../exceptions/unauthorized.exception"
 import { RequestContext } from "../interfaces/request-context.interface"
 
@@ -36,4 +37,13 @@ export async function getPublishersRecords(ctx: RequestContext): Promise<APIPubl
     const { connection } = ctx.state
     const publishers = await connection('publishers').select(['id', 'name'])
     return publishers
+}
+
+export async function getPublisherRecordById(publisherId: string, ctx: RequestContext): Promise<APIPublisher> {
+    const { connection } = ctx.state
+    const publisher = await connection('publishers').select(['id', 'name']).where({ id: publisherId }).first()
+    if (!publisher) {
+        throw new PublisherNotFoundException()
+    }
+    return publisher
 }
