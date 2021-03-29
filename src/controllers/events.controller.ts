@@ -1,7 +1,7 @@
 import Router from "@koa/router"
 import { RequestState } from "../interfaces/request-context.interface"
 import { tokenValidatorMiddleware } from "../middlewares/token-validator.middleware"
-import { createEvent, ensureUserEligibilityToPublisher, getEventsByPublisher } from "../services/events.service"
+import { createEvent, ensureUserEligibilityToPublisher, getAllEvents, getEventsByPublisher } from "../services/events.service"
 
 const eventsController = new Router<RequestState>()
 
@@ -19,4 +19,9 @@ eventsController.get('/publishers/:publisherId/events', async (ctx) => {
     ctx.body = body
 })
 
+
+eventsController.get('/events', async (ctx) => {
+    const body = await getAllEvents(ctx)
+    ctx.body = body
+})
 export { eventsController }

@@ -43,3 +43,9 @@ export async function getEventsRecordsByPublisher(publisherId: string, ctx: Requ
     const events = await connection(tableName).select(['id', 'name', 'description', 'start_date', 'end_date']).where({ publisher_id: publisherId })
     return events
 }
+
+export async function getAllEventRecords(ctx: RequestContext): Promise<APIEvent[]> {
+    const { connection } = ctx.state
+    const events = await connection(tableName).select(['id', 'name', 'description', 'start_date', 'end_date'])
+    return events
+}
