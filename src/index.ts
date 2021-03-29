@@ -1,5 +1,6 @@
 import Koa from 'koa'
 import bodyParser from 'koa-bodyparser'
+import { eventsController } from './controllers/events.controller'
 import { publishersController } from './controllers/publishers.controller'
 import { userMgmtController } from './controllers/user-mgmt.controller'
 import { userController } from './controllers/users.controller'
@@ -25,7 +26,10 @@ function registerRoutes(app: Koa) {
         .use(userController.allowedMethods())
         .use(publishersController.routes())
         .use(publishersController.allowedMethods())
+        .use(eventsController.routes())
+        .use(eventsController.allowedMethods())
     logger.info({ message: 'Registered routes for user-mgmt:', routes: userMgmtController.stack.map(i => i.path) })
     logger.info({ message: 'Registered routes for users:', routes: userController.stack.map(i => i.path) })
     logger.info({ message: 'Registered routes for publishers:', routes: publishersController.stack.map(i => i.path) })
+    logger.info({ message: 'Registered routes for events:', routes: eventsController.stack.map(i => i.path) })
 }
