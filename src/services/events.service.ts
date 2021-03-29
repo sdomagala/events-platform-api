@@ -1,6 +1,6 @@
 import { ForbiddenException } from "../exceptions/forbidden.exception";
 import { RequestContext } from "../interfaces/request-context.interface";
-import { createEventRecord } from "../repositories/events.repository";
+import { APIEvent, createEventRecord, getEventsRecordsByPublisher } from "../repositories/events.repository";
 import { getDbPublisherRecordById } from "../repositories/publishers.repository";
 
 
@@ -19,4 +19,8 @@ export async function createEvent(ctx: RequestContext): Promise<{ id: number }> 
     }
     const [id] = await createEventRecord({ name, description, publisher_id: publisherId, start_date: startDate, end_date: endDate }, ctx)
     return { id }
+}
+
+export async function getEventsByPublisher(publisherId: string, ctx: RequestContext): Promise<APIEvent[]> {
+    return getEventsRecordsByPublisher(publisherId, ctx)
 }

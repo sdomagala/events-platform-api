@@ -37,3 +37,9 @@ export async function createEventRecord(event: CreateEventInput, ctx: RequestCon
         throw e
     }
 }
+
+export async function getEventsRecordsByPublisher(publisherId: string, ctx: RequestContext): Promise<APIEvent[]> {
+    const { connection } = ctx.state
+    const events = await connection(tableName).select(['id', 'name', 'description', 'start_date', 'end_date']).where({ publisher_id: publisherId })
+    return events
+}
