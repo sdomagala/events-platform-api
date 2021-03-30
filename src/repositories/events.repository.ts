@@ -1,3 +1,4 @@
+import { EventNotFoundException } from "../exceptions/event-not-found.exception"
 import { UnauthorizedException } from "../exceptions/unauthorized.exception"
 import { RequestContext } from "../interfaces/request-context.interface"
 
@@ -44,8 +45,25 @@ export async function getEventsRecordsByPublisher(publisherId: string, ctx: Requ
     return events
 }
 
+export async function getDbEventRecord(eventId: string, ctx: RequestContext): Promise<DbEvent> {
+    const { connection } = ctx.state
+    const event = await connection(tableName).select(['id', 'name', 'description', 'publisher_id', 'start_date', 'end_date']).where({ id: eventId }).first()
+    if (!event) {
+        throw new EventNotFoundException()
+    }
+    return event
+}
+
 export async function getAllEventRecords(ctx: RequestContext): Promise<APIEvent[]> {
     const { connection } = ctx.state
     const events = await connection(tableName).select(['id', 'name', 'description', 'start_date', 'end_date'])
     return events
+}
+
+export async function deleteEventRecord(eventId: string, publisherId: string, ctx: RequestContext): Promise<void> {
+    const { connection } = ctx.state
+    const [event] = await connection(tableName).delete().where({ id: eventId, publisher_id: publisherId }).returning(['id'])
+    if (!event) {
+        throw new EventNotFoundException()
+    }
 }
