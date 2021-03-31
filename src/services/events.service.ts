@@ -1,5 +1,6 @@
 import { ForbiddenException } from "../exceptions/forbidden.exception";
 import { RequestContext } from "../interfaces/request-context.interface";
+import { createAttendeeRecord } from "../repositories/attendees.repository";
 import { APIEvent, createEventRecord, deleteEventRecord, getAllEventRecords, getDbEventRecord, getEventsRecordsByPublisher } from "../repositories/events.repository";
 import { getDbPublisherRecordById } from "../repositories/publishers.repository";
 
@@ -40,4 +41,13 @@ export async function deleteEvent(eventId: string, ctx: RequestContext): Promise
     const event = await getDbEventRecord(eventId, ctx)
     await ensureUserEligibilityToPublisher(userId, `${event.publisher_id}`, ctx)
     await deleteEventRecord(eventId, `${event.publisher_id}`, ctx)
+}
+
+export async function createAttendee(eventId: string, ctx: RequestContext): Promise<{ id: number }> {
+    if (!ctx.state.user) {
+        throw new ForbiddenException('User not authorized')
+    }
+    const userId = ctx.state.user?.userId
+    const [id] = await createAttendeeRecord(eventId, userId, ctx)
+    return { id }
 }

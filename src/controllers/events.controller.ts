@@ -1,7 +1,7 @@
 import Router from "@koa/router"
 import { RequestState } from "../interfaces/request-context.interface"
 import { tokenValidatorMiddleware } from "../middlewares/token-validator.middleware"
-import { createEvent, deleteEvent, ensureUserEligibilityToPublisher, getAllEvents, getEventsByPublisher } from "../services/events.service"
+import { createAttendee, createEvent, deleteEvent, ensureUserEligibilityToPublisher, getAllEvents, getEventsByPublisher } from "../services/events.service"
 
 const eventsController = new Router<RequestState>()
 
@@ -25,6 +25,12 @@ eventsController.del('/events/:eventId', tokenValidatorMiddleware, async (ctx) =
     const eventId = ctx.params.eventId
     await deleteEvent(eventId, ctx)
     ctx.status = 204
+})
+
+eventsController.post('/events/:eventId/attendees', tokenValidatorMiddleware, async (ctx) => {
+    const eventId = ctx.params.eventId
+    const body = await createAttendee(eventId, ctx)
+    ctx.body = body
 })
 
 export { eventsController }
