@@ -1,8 +1,9 @@
 import { ForbiddenException } from "../exceptions/forbidden.exception";
 import { RequestContext } from "../interfaces/request-context.interface";
-import { createAttendeeRecord } from "../repositories/attendees.repository";
+import { createAttendeeRecord, getEventAttendeesRecords } from "../repositories/attendees.repository";
 import { APIEvent, createEventRecord, deleteEventRecord, getAllEventRecords, getDbEventRecord, getEventsRecordsByPublisher } from "../repositories/events.repository";
 import { getDbPublisherRecordById } from "../repositories/publishers.repository";
+import { APIUser } from "../repositories/users.repository";
 
 
 
@@ -50,4 +51,8 @@ export async function createAttendee(eventId: string, ctx: RequestContext): Prom
     const userId = ctx.state.user?.userId
     const [id] = await createAttendeeRecord(eventId, userId, ctx)
     return { id }
+}
+
+export function getEventAttendees(eventId: string, ctx: RequestContext): Promise<APIUser[]> {
+    return getEventAttendeesRecords(eventId, ctx)
 }

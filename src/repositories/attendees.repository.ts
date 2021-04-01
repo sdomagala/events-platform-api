@@ -2,6 +2,7 @@ import { EventNotFoundException } from "../exceptions/event-not-found.exception"
 import { UserAlreadyAttendsEvent } from "../exceptions/user-already-attends-event.exception"
 import { UserNotFoundException } from "../exceptions/user-not-found.exception"
 import { RequestContext } from "../interfaces/request-context.interface"
+import { APIUser } from "./users.repository"
 
 interface BaseAttendee {
     user_id: string
@@ -35,4 +36,13 @@ export async function createAttendeeRecord(eventId: string, userId: number, ctx:
         }
         throw e
     }
+}
+
+export async function getEventAttendeesRecords(eventId: string, ctx: RequestContext): Promise<APIUser[]> {
+    const { connection } = ctx.state
+    const attendees = await connection(tableName)
+        .select(['users.id', 'users.email', 'users.name', 'users.surname'])
+        .where({ event_id: eventId })
+        .innerJoin('users', `${tableName}.user_id`, 'users.id')
+    return attendees
 }
