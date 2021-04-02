@@ -1,6 +1,6 @@
 import { ForbiddenException } from "../exceptions/forbidden.exception";
 import { RequestContext } from "../interfaces/request-context.interface";
-import { createAttendeeRecord, getEventAttendeesRecords } from "../repositories/attendees.repository";
+import { createAttendeeRecord, deleteAttendeeRecord, getEventAttendeesRecords } from "../repositories/attendees.repository";
 import { APIEvent, createEventRecord, deleteEventRecord, getAllEventRecords, getDbEventRecord, getEventsRecordsByPublisher } from "../repositories/events.repository";
 import { getDbPublisherRecordById } from "../repositories/publishers.repository";
 import { APIUser } from "../repositories/users.repository";
@@ -55,4 +55,15 @@ export async function createAttendee(eventId: string, ctx: RequestContext): Prom
 
 export function getEventAttendees(eventId: string, ctx: RequestContext): Promise<APIUser[]> {
     return getEventAttendeesRecords(eventId, ctx)
+}
+
+export function deleteAttendee(eventId: string, attendeeId: string, ctx: RequestContext): Promise<void> {
+    if (!ctx.state.user) {
+        throw new ForbiddenException('User not authorized')
+    }
+    const userId = ctx.state.user?.userId
+    if (Number(attendeeId) !== userId) {
+        throw new ForbiddenException('Trying to delete attendee other than yourself')
+    }
+    return deleteAttendeeRecord(eventId, userId, ctx)
 }

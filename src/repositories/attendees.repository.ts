@@ -1,3 +1,4 @@
+import { AttendeeNotFoundException } from "../exceptions/attendee-not-found.exception"
 import { EventNotFoundException } from "../exceptions/event-not-found.exception"
 import { UserAlreadyAttendsEvent } from "../exceptions/user-already-attends-event.exception"
 import { UserNotFoundException } from "../exceptions/user-not-found.exception"
@@ -45,4 +46,12 @@ export async function getEventAttendeesRecords(eventId: string, ctx: RequestCont
         .where({ event_id: eventId })
         .innerJoin('users', `${tableName}.user_id`, 'users.id')
     return attendees
+}
+
+export async function deleteAttendeeRecord(eventId: string, userId: number, ctx: RequestContext): Promise<void> {
+    const { connection } = ctx.state
+    const [attendee] = await connection(tableName).delete().where({ event_id: eventId, user_id: userId }).returning(['id'])
+    if (!attendee) {
+        throw new AttendeeNotFoundException()
+    }
 }

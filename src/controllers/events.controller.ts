@@ -1,7 +1,7 @@
 import Router from "@koa/router"
 import { RequestState } from "../interfaces/request-context.interface"
 import { tokenValidatorMiddleware } from "../middlewares/token-validator.middleware"
-import { createAttendee, createEvent, deleteEvent, ensureUserEligibilityToPublisher, getAllEvents, getEventAttendees, getEventsByPublisher } from "../services/events.service"
+import { createAttendee, createEvent, deleteAttendee, deleteEvent, ensureUserEligibilityToPublisher, getAllEvents, getEventAttendees, getEventsByPublisher } from "../services/events.service"
 
 const eventsController = new Router<RequestState>()
 
@@ -37,6 +37,13 @@ eventsController.get('/events/:eventId/attendees', async (ctx) => {
     const eventId = ctx.params.eventId
     const body = await getEventAttendees(eventId, ctx)
     ctx.body = body
+})
+
+eventsController.del('/events/:eventId/attendees/:userId', tokenValidatorMiddleware, async (ctx) => {
+    const eventId = ctx.params.eventId
+    const userId = ctx.params.userId
+    await deleteAttendee(eventId, userId, ctx)
+    ctx.status = 204
 })
 
 export { eventsController }
