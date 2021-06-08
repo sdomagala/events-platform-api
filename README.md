@@ -1,3 +1,26 @@
+# Wstęp
+
+## Jak zacząć korzystać z tego repozytorium?
+Na początek zainstaluj program git lub skorzystaj z klientów które Ci to ułatwią, jak np. [GitHub Desktop](https://desktop.github.com/) (preferowane) czy [SourceTree](https://www.sourcetreeapp.com/). 
+
+Następnie, w zależności od wybranego rozwiązania sklonuj to repozytorium na swój dysk lokalny - w klientach można to wyklikać, przy korzystaniu z "czystego" gita [sprawdź ten tutorial](https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository-from-github/cloning-a-repository).
+
+## Poruszanie się po wersjach kodu
+Każda lekcja która kontrybuuje jakąś funkcjonalność do tego kodu jest osobnym commitem, oraz są też wyróżnione dwie ważne części - ukończenie boilerplate'a ([tag boilerplate](https://github.com/sdomagala/events-platform-api/tree/boilerplate)) oraz sfinalizowanie wyglądu naszej bazy danych ([tag database-final-model](https://github.com/sdomagala/events-platform-api/tree/database-final-model)).
+
+Zachęcam do samodzielnego pisania kodu razem ze mną, a jedynie porównywanie tego co się zmieniło między lekcjami.
+
+### [Lista commitów](https://github.com/sdomagala/events-platform-api/commits/master)
+
+![image](https://user-images.githubusercontent.com/6019897/121243002-81523080-c89d-11eb-920d-e8ed3149603a.png)
+
+Po kliknięciu w (1) zostaniesz przekierowany na wersję kodu taką jak wyglądała po tym commicie.
+
+Po kliknięciu w (2) zobaczysz deltę zmian które zostały dodane w tym commicie względem poprzedniego.
+
+
+-----------------------
+
 # Założenia projektu
 
 Celem projektu jest stworzenie platformy do zarządzania wydarzeniami.
@@ -59,3 +82,6 @@ sudo -u postgres psql events
 admin
 admin
 ```
+
+
+## Zachęcam do pozostawiania uwag/potencjalnych ulepszeń w tym repozytorium (odpowiednio zakładki Issues i Pull Requests) czy też poprzez stronę kursu! 
